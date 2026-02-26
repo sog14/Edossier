@@ -1,65 +1,51 @@
+name: Deploy to GitHub Pages
 
-import { DossierState } from '../types';
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 
-declare const html2pdf: any;
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-/**
- * Export specific HTML element to a high-resolution PDF
- */
-export const exportToPdf = async (elementId: string, filename: string) => {
-  const element = document.getElementById(elementId);
-  if (!element) return;
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  const opt = {
-    // Set margin to 0 because the element has its own padding (p-[12mm])
-    // This prevents double-margin scaling issues that disrupt the layout
-    margin: 0, 
-    filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 3, // 3 is optimal for high res without hitting browser canvas limits
-      useCORS: true, 
-      letterRendering: true,
-      dpi: 300,
-      logging: false,
-      scrollX: 0,
-      scrollY: 0
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-    pagebreak: { 
-      mode: ['css', 'legacy'], // 'avoid-all' removed as it causes layout disruption
-      avoid: ['tr', 'td', 'img', 'video', 'audio', '.page-break-avoid']
-    }
-  };
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
 
-  try {
-    await html2pdf().from(element).set(opt).save();
-  } catch (err) {
-    console.error('PDF Generation failed:', err);
-  }
-};
+      - name: Install dependencies
+        run: npm install
 
-/**
- * Export specific HTML content to a Word-compatible .doc file
- */
-export const exportToWord = (elementId: string, filename: string) => {
-  const element = document.getElementById(elementId);
-  if (!element) return;
+      - name: Build
+        run: npm run build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
-  // Simple Word XML wrapper for HTML content
-  const preHtml = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset='utf-8'><title>Export HTML To Doc</title><style>table { border-collapse: collapse; width: 100%; } td { border: 1px solid black; padding: 4px; font-family: Arial; font-size: 10pt; } tr { page-break-inside: avoid; break-inside: avoid; }</style></head><body>";
-  const postHtml = "</body></html>";
-  const html = preHtml + element.innerHTML + postHtml;
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
-  const blob = new Blob(['\ufeff', html], {
-    type: 'application/msword'
-  });
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
 
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
