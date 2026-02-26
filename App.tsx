@@ -194,9 +194,10 @@ const App: React.FC = () => {
     e.target.value = ''; // Reset input
   };
 
-  const handlePdfExport = async () => {
+  const handlePdfExport = async (compress: boolean = false) => {
     setIsExporting(true);
-    await exportToPdf('dossier-content', `${state.reportType}_${state.fields['f1'] || state.fields['bail_name'] || 'Draft'}.pdf`);
+    const filename = `${state.reportType}_${state.fields['f1'] || state.fields['bail_name'] || 'Draft'}${compress ? '_compressed' : ''}.pdf`;
+    await exportToPdf('dossier-content', filename, compress);
     setIsExporting(false);
   };
 
@@ -281,10 +282,17 @@ const App: React.FC = () => {
           <div className="flex flex-col gap-3 mb-8">
             <button
               disabled={isExporting}
-              onClick={handlePdfExport}
+              onClick={() => handlePdfExport(false)}
               className="w-full bg-blue-700 hover:bg-blue-800 disabled:bg-gray-400 text-white px-4 py-3 rounded-lg font-bold shadow-md transition-all flex items-center justify-center gap-2"
             >
               {isExporting ? 'Generating...' : 'Download High-Res PDF'}
+            </button>
+            <button
+              disabled={isExporting}
+              onClick={() => handlePdfExport(true)}
+              className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-4 py-3 rounded-lg font-bold shadow-md transition-all flex items-center justify-center gap-2"
+            >
+              {isExporting ? 'Generating...' : 'Download Compressed PDF (Small)'}
             </button>
             <button
               onClick={handleWordExport}
