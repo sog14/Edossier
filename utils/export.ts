@@ -4,9 +4,9 @@ import { DossierState } from '../types';
 declare const html2pdf: any;
 
 /**
- * Export specific HTML element to a high-resolution PDF
+ * Export specific HTML element to a PDF with optional compression
  */
-export const exportToPdf = async (elementId: string, filename: string) => {
+export const exportToPdf = async (elementId: string, filename: string, compress: boolean = false) => {
   const element = document.getElementById(elementId);
   if (!element) return;
 
@@ -15,20 +15,20 @@ export const exportToPdf = async (elementId: string, filename: string) => {
     // This prevents double-margin scaling issues that disrupt the layout
     margin: 0, 
     filename: filename,
-    image: { type: 'jpeg', quality: 0.98 },
+    image: { type: 'jpeg', quality: compress ? 0.75 : 0.98 },
     html2canvas: { 
-      scale: 3, // 3 is optimal for high res without hitting browser canvas limits
+      scale: compress ? 1.5 : 3, // Lower scale significantly reduces file size
       useCORS: true, 
       letterRendering: true,
-      dpi: 300,
+      dpi: compress ? 150 : 300,
       logging: false,
       scrollX: 0,
       scrollY: 0
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
     pagebreak: { 
-      mode: ['css', 'legacy'], // 'avoid-all' removed as it causes layout disruption
-      avoid: ['tr', 'td', 'img', 'video', 'audio', '.page-break-avoid']
+      mode: ['css', 'legacy'],
+      avoid: ['tr', 'td', 'tbody', 'img', 'video', 'audio', '.page-break-avoid']
     }
   };
 
