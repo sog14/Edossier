@@ -36,8 +36,21 @@
         /* Prevent table rows from splitting across pages in PDF */
         table {
             page-break-inside: auto;
+            border-collapse: collapse !important;
         }
         tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        td {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        tbody {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
+        .page-break-avoid {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
@@ -57,6 +70,10 @@
             td {
                 orphans: 3;
                 widows: 3;
+            }
+            tbody {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
         }
     </style>
