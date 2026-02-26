@@ -124,8 +124,8 @@ export const DataEntry: React.FC<DataEntryProps> = ({
                 type="text"
                 name="bail_datetime"
                 value={state.fields.bail_datetime || ''}
-                readOnly
-                className="w-full border border-gray-200 bg-gray-50 rounded p-2 text-xs focus:outline-none"
+                onChange={(e) => onFieldChange(e.target.name, e.target.value)}
+                className="w-full border border-gray-200 rounded p-2 text-xs focus:ring-1 focus:ring-blue-500 focus:outline-none"
               />
             </div>
 
