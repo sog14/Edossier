@@ -57,8 +57,8 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
       <div className="text-black leading-tight">
         <div className="text-center font-bold text-2xl mb-6 underline decoration-double uppercase">BAIL MONITORING REPORT</div>
         
-        <table className="w-full border-collapse border-2 border-black text-[11px] page-break-avoid">
-          <tbody>
+        <table className="w-full border-collapse border-2 border-black text-[11px]">
+          <tbody className="page-break-avoid">
             <tr>
               <td className="border border-black w-8 text-center font-bold">1</td>
               <td className="border border-black w-48 font-bold p-2 bg-gray-50">नाम/उपनाम (Name/Alias)</td>
@@ -74,6 +74,8 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
               <td className="border border-black font-bold p-2 bg-gray-50">जी०पी०एस० (GPS Location)</td>
               <td className="border border-black p-2 whitespace-pre-wrap">{fields.bail_gps}</td>
             </tr>
+          </tbody>
+          <tbody className="page-break-avoid">
             <tr>
               <td className="border border-black text-center font-bold" rowSpan={6}>4</td>
               <td className="border border-black font-bold p-2 bg-blue-50 uppercase text-xs">अपराधी की वर्तमान स्थिति (Present Status)</td>
@@ -99,6 +101,8 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
               <td className="border border-black p-2 italic bg-gray-50 pl-4">(v) अन्य जानकारी (Other information)</td>
               <td className="border border-black p-2 whitespace-pre-wrap">{fields.bail_other}</td>
             </tr>
+          </tbody>
+          <tbody className="page-break-avoid">
             <tr>
               <td className="border border-black text-center font-bold">5</td>
               <td className="border border-black font-bold p-2 bg-gray-50">सत्यापनकर्ता (Verification done by)</td>
@@ -210,7 +214,7 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
       <div className="text-center font-bold text-2xl mb-6 underline decoration-double uppercase">{reportType}</div>
       
       <table className="w-full border-collapse border-2 border-black text-[11px]">
-        <tbody>
+        <tbody className="page-break-avoid">
           {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => (
             <tr key={n}>
               <td className="border border-black w-8 text-center font-bold">{n}</td>
@@ -227,14 +231,18 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
               )}
             </tr>
           ))}
-          
-          <tr className="page-break-avoid">
-            <td className="border border-black text-center font-bold">11</td>
+        </tbody>
+        
+        <tbody className="page-break-avoid">
+          <tr>
+            <td className="border border-black w-8 text-center font-bold">11</td>
             <td className="border border-black font-bold p-1 bg-gray-50">{getLabel(11)}</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f11}</td>
           </tr>
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={FAMILY_KEYS.length + 1}>12</td>
             <td className="border border-black font-bold p-1 bg-gray-100 uppercase text-[9px]" colSpan={3}>
               पारिवारिक विवरणी (Family Details)
@@ -243,78 +251,93 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
           {FAMILY_KEYS.map((key, idx) => {
             const label = key === 'ChildrenDetail' ? 'Children Detail' : `${key} Detail`;
             return (
-              <tr key={key} className="page-break-avoid">
+              <tr key={key}>
                 <td className="border border-black font-bold p-1 italic pl-4 bg-gray-50">{idx + 1}. {label}</td>
                 <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f12_${key}`]}</td>
               </tr>
             );
           })}
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={2}>13</td>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">1. फोटाग्राफ लेने की तिथि</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f13_PhotoDate}</td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">2. चक्रा एप में प्रविष्टि</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f13_ChakraApp}</td>
           </tr>
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={HABIT_KEYS.length + 1}>14</td>
             <td className="border border-black font-bold p-1 bg-gray-50 uppercase text-[9px]">{getLabel(14)}</td>
             <td colSpan={2} className="border border-black bg-gray-50"></td>
           </tr>
           {HABIT_KEYS.map((key, idx) => (
-            <tr key={key} className="page-break-avoid">
+            <tr key={key}>
               <td className="border border-black p-1 italic bg-gray-50 pl-4">{idx + 1}. {key}</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f14_${key}`]}</td>
             </tr>
           ))}
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={4}>15</td>
             <td className="border border-black font-bold p-1 bg-gray-50 uppercase text-[9px]">{getLabel(15)}</td>
             <td colSpan={2} className="border border-black bg-gray-50"></td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">1. वैवाहिक स्थिति</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f15_Status}</td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">2. ससुर विवरणी</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f15_FatherInLaw}</td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">3. साला विवरणी</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f15_BrotherInLaw}</td>
           </tr>
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold">16</td>
             <td className="border border-black font-bold p-1 bg-gray-50">{getLabel(16)}</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f16}</td>
           </tr>
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={2}>17</td>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">1. वकील पैरोकार</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f17_Lawyer}</td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">2. जमानतदार विवरणी</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f17_Guarantor}</td>
           </tr>
+        </tbody>
 
-          {[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29].map(n => (
-            <tr key={n} className="page-break-avoid">
+        {/* Sections 18-29 - Individual tbodies to allow breaks between them but not inside them */}
+        {[18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29].map(n => (
+          <tbody key={n} className="page-break-avoid">
+            <tr>
               <td className="border border-black text-center font-bold">{n}</td>
               <td className="border border-black font-bold p-1 bg-gray-50">{getLabel(n)}</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f${n}`]}</td>
             </tr>
-          ))}
+          </tbody>
+        ))}
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={5}>30</td>
             <td className="border border-black font-bold p-1 bg-blue-50 uppercase text-[9px]">{getLabel(30)}</td>
             <td colSpan={2} className="border border-black bg-blue-50"></td>
@@ -325,62 +348,72 @@ export const DossierPage: React.FC<DossierPageProps> = ({ state }) => {
             'घटना मे संलिप्त का नाम (co-offender)', 
             'Confession की संक्षिप्त विवरणी'
           ].map((s, idx) => (
-            <tr key={s} className="page-break-avoid">
+            <tr key={s}>
               <td className="border border-black p-1 italic bg-gray-50 pl-4">{idx + 1}. {s}</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f30_sub${idx+1}`]}</td>
             </tr>
           ))}
+        </tbody>
 
-          {[31, 32, 33].map(n => (
-            <tr key={n} className="page-break-avoid">
+        {[31, 32, 33].map(n => (
+          <tbody key={n} className="page-break-avoid">
+            <tr>
               <td className="border border-black text-center font-bold">{n}</td>
               <td className="border border-black font-bold p-1 bg-gray-50">{getLabel(n)}</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f${n}`]}</td>
             </tr>
-          ))}
+          </tbody>
+        ))}
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={DIGITAL_KEYS.length + 1}>34</td>
             <td className="border border-black font-bold p-1 bg-blue-50 underline uppercase text-xs">{getLabel(34)}</td>
             <td colSpan={2} className="border border-black bg-blue-50"></td>
           </tr>
           {DIGITAL_KEYS.map((key, idx) => (
-            <tr key={key} className="page-break-avoid">
+            <tr key={key}>
               <td className="border border-black p-1 italic bg-gray-50 pl-4">{idx + 1}. {key} ID/Pass</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f34_${key}`]}</td>
             </tr>
           ))}
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={DOC_KEYS.length + 1}>35</td>
             <td className="border border-black font-bold p-1 bg-blue-50 underline uppercase text-xs">{getLabel(35)}</td>
             <td colSpan={2} className="border border-black bg-blue-50"></td>
           </tr>
           {DOC_KEYS.map((key, idx) => (
-            <tr key={key} className="page-break-avoid">
+            <tr key={key}>
               <td className="border border-black p-1 italic bg-gray-50 pl-4">{idx + 1}. {key} Details</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f35_${key}`]}</td>
             </tr>
           ))}
+        </tbody>
 
-          <tr className="page-break-avoid">
+        <tbody className="page-break-avoid">
+          <tr>
             <td className="border border-black text-center font-bold" rowSpan={2}>36</td>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">1. जेल जाने का विवरणी</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f36_JailDetail}</td>
           </tr>
-          <tr className="page-break-avoid">
+          <tr>
             <td className="border border-black p-1 italic bg-gray-50 pl-4">2. E-PRISON से प्राप्त विवरणी</td>
             <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields.f36_EPrison}</td>
           </tr>
+        </tbody>
 
-          {[37, 38, 39].map(n => (
-            <tr key={n} className="page-break-avoid">
+        {[37, 38, 39].map(n => (
+          <tbody key={n} className="page-break-avoid">
+            <tr>
               <td className="border border-black text-center font-bold">{n}</td>
               <td className="border border-black font-bold p-1 bg-gray-50">{getLabel(n)}</td>
               <td colSpan={2} className="border border-black p-1 whitespace-pre-wrap">{fields[`f${n}`]}</td>
             </tr>
-          ))}
-        </tbody>
+          </tbody>
+        ))}
       </table>
 
       {/* Appendix Section */}
